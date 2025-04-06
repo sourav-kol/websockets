@@ -1,55 +1,63 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-// import WebSocket from 'ws';
+import { useEffect, useState } from 'react';
 
 export default function Play() {
-    const socketRef = useRef<WebSocket | null>(null);
+    const [socket, setsocket] = useState<WebSocket | null>(null);
     const [connected, setConnected] = useState(false);
+    const [name, setName] = useState<string>("");
 
     useEffect(() => {
         // Prevent server-side execution
         if (typeof window === 'undefined') return;
 
         // Connect to WebSocket server
-        socketRef.current = new WebSocket('ws://localhost:8080');
+        var socketInit = new WebSocket('ws://localhost:8080');
+        setsocket(socketInit);
 
-        socketRef.current.onopen = () => {
-            console.log('WebSocket connected');
-            setConnected(true);
-        };
+        if (socketInit.OPEN) {
+            socketInit.onopen = () => {
+                console.log('WebSocket connected');
+                setConnected(true);
+            };
 
-        socketRef.current.onmessage = (event) => {
-            const message = event.data;
-            console.log('Received:', message);
-            // Handle game updates here
-        };
+            socketInit.onmessage = (event) => {
+                const message = event.data;
+                console.log('Received:', message);
+            };
 
-        socketRef.current.onclose = () => {
-            console.log('WebSocket disconnected');
-            setConnected(false);
-        };
+            socketInit.onclose = () => {
+                console.log('WebSocket disconnected');
+                setConnected(false);
+            };
 
-        socketRef.current.onerror = (err) => {
-            console.error('WebSocket error:', err);
-        };
+            socketInit.onerror = (err) => {
+                console.error('WebSocket error:', err);
+            };
 
+        }
         // Cleanup on unmount
         return () => {
-            socketRef.current?.close();
+            socket?.close();
         };
     }, []);
 
     useEffect(() => {
-        if (connected) {
+        if (connected && socket) {
+            socket?.send(name);
             // Send a message to the server
-            socketRef.current?.send('Hello from the client!');
         }
-    }, [connected]);
+    }, [name]);
+
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const name = event.target.value;
+        setName(name);
+    };
 
     return (
         <div className="">
             <h1>start playing</h1>
+            <input type="text" placeholder="Enter your name" onChange={handleInputChange} value={name} />
         </div>
     )
 }
