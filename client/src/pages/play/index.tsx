@@ -6,13 +6,14 @@ export default function Play() {
     const [socket, setsocket] = useState<WebSocket | null>(null);
     const [connected, setConnected] = useState(false);
     const [name, setName] = useState<string>("");
+    const [id, setId]  = useState<string>(crypto.randomUUID());
 
     useEffect(() => {
         // Prevent server-side execution
         if (typeof window === 'undefined') return;
 
         // Connect to WebSocket server
-        var socketInit = new WebSocket('ws://localhost:8080');
+        var socketInit = new WebSocket('ws://localhost:8080/668f6944-4497-4273-b3fc-40a99f7b4a2f');
         setsocket(socketInit);
 
         if (socketInit.OPEN) {
@@ -44,8 +45,10 @@ export default function Play() {
 
     useEffect(() => {
         if (connected && socket) {
-            socket?.send(name);
             // Send a message to the server
+            setInterval(() => {
+                socket?.send(`${id} - it is ${Date.now()} now`);
+            }, 100);
         }
     }, [name]);
 

@@ -1,24 +1,27 @@
-import express from "express";
-import { WebSocket, WebSocketServer } from 'ws';
+import { app, server } from "./express-server";
+import cors from 'cors';
+import { v4 as uuidv4 } from 'uuid';
 
-const app = express();
-const port = 3001;
 
-app.get("/", (req, res) => {
-  res.send("Hello, World!");
+// const router = express.Router();
+
+var corsOptions = {
+  origin: 'http://localhost:3000',
+  optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
+
+app.get("/open-connection", (req, res) => {
+  var id: string = uuidv4();
+  console.log("id", id);
+
+  res.send({ id: id });
 });
 
-app.listen(port, () => {
-  console.log(`Server is running at http://localhost:${port}`);
+app.get("/close-connection", (req, res) => {
+  res.send("closed...");
 });
 
-const wss = new WebSocketServer({ port:8080 });
-
-wss.on('connection', (ws, req) => {
-  ws.on('message', (message) => {
-    console.log(`Hi, there => ${message}`);
-    // ws.send(`You sent => ${message}`);
-  });
-
-  ws.send('Welcome to the WebSocket server!');
-})
+//init express server
+server();
