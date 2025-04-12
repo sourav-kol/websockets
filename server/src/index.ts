@@ -2,7 +2,6 @@ import { app, server } from "./express-server";
 import cors from 'cors';
 import { v4 as uuidv4 } from 'uuid';
 
-
 // const router = express.Router();
 
 var corsOptions = {
