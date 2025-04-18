@@ -1,26 +1,21 @@
-import { app, server } from "./express-server";
-import cors from 'cors';
-import { v4 as uuidv4 } from 'uuid';
+import express from 'express';
+import http from 'http';
+import { Server } from 'socket.io';
 
-// const router = express.Router();
-
-var corsOptions = {
-  origin: 'http://localhost:3000',
-  optionsSuccessStatus: 200
-};
-
-app.use(cors(corsOptions));
-
-app.get("/open-connection", (req, res) => {
-  var id: string = uuidv4();
-  console.log("id", id);
-
-  res.send({ id: id });
+const app = express();
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: { origin: 'http://localhost:3000' }, // 👈 match your frontend origin
 });
 
-app.get("/close-connection", (req, res) => {
-  res.send("closed...");
+io.on('connection', (socket) => {
+  console.log('Client connected:', socket.id);
+
+  socket.on('send_msg', (msg) => {
+    console.log('Message from client:', msg);
+  });
 });
 
-//init express server
-server();
+server.listen(8080, () => {
+  console.log('Server running at http://localhost:8080');
+});
