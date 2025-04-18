@@ -1,11 +1,8 @@
-import express from 'express';
-import http from 'http';
 import { Server } from 'socket.io';
+import { expressServer, httpServer } from './express-server';
 
-const app = express();
-const server = http.createServer(app);
-const io = new Server(server, {
-  cors: { origin: 'http://localhost:3000' }, // 👈 match your frontend origin
+const io = new Server(httpServer, {
+  cors: { origin: 'http://localhost:3000' },
 });
 
 io.on('connection', (socket) => {
@@ -16,6 +13,4 @@ io.on('connection', (socket) => {
   });
 });
 
-server.listen(8080, () => {
-  console.log('Server running at http://localhost:8080');
-});
+expressServer();
