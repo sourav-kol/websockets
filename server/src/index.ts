@@ -1,9 +1,6 @@
-import { Server } from 'socket.io';
-import { expressServer, httpServer } from './express-server';
+import { expressServer } from './express-server';
+import { io } from './web-socket';
 
-const io = new Server(httpServer, {
-  cors: { origin: 'http://localhost:3000' },
-});
 
 io.on('connection', (socket) => {
   console.log('Client connected:', socket.id);
