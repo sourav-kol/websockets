@@ -1,13 +1,12 @@
 import { expressServer } from './express-server';
 import { io } from './web-socket';
+import { sendMessage } from './web-socket/events';
+import { websocketEvents } from './helpers/constants';
 
-
-io.on('connection', (socket) => {
+io.on(websocketEvents.CONNECT, (socket) => {
   console.log('Client connected:', socket.id);
 
-  socket.on('send_msg', (msg) => {
-    console.log('Message from client:', msg);
-  });
+  sendMessage(socket);
 });
 
 expressServer();
