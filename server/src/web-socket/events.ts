@@ -6,4 +6,8 @@ const sendMessage = (socket: Socket) => {
     });
 }
 
+const joinRoom = (socket: Socket, roomId: string) => {
+    socket.join(roomId)
+}
+
 export { sendMessage };
