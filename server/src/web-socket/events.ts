@@ -1,13 +1,33 @@
-import { Server, Socket } from "socket.io";
+import { Socket } from "socket.io";
+import { websocketEvents } from ".././helpers/constants";
+import { joinRoomRequest, clientMessageRequest } from ".././types";
 
-const sendMessage = (socket: Socket) => {
-    socket.on('send_msg', (msg: string) => {
+const recieveMessage = (socket: Socket) => {
+    socket.on(websocketEvents.CLIENTMSG, (msg: string) => {
         console.log('Message from client:', msg);
     });
 }
 
-const joinRoom = (socket: Socket, roomId: string) => {
-    socket.join(roomId)
+const joinRoom = (socket: Socket) => {
+    socket.on(websocketEvents.JOINROOM, (request: joinRoomRequest) => {
+        var { roomId } = request;
+        console.log('joined ', socket.id, 'room ID:', roomId);
+        socket.join(roomId);
+    });
 }
 
-export { sendMessage };
+const recieveMessageByRoom = (socket: Socket) => {
+    socket.on(websocketEvents.CLIENTMSG, (request: clientMessageRequest) => {
+        console.log('Message from client:', request);
+        // socket.to(request.roomId).emit(websocketEvents.SERVERMSG, request);
+        socket.emit(websocketEvents.SERVERMSG, request);
+    });
+}
+
+// const sendMessageByRoom = (socket: Socket, roomId: string) => {
+//     socket.on(websocketEvents.SERVERMSG, (request: clientMessageRequest) => {
+//         console.log('Message to client:', request);
+//     });
+// }
+
+export { recieveMessage, joinRoom, recieveMessageByRoom };
