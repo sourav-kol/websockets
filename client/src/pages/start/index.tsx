@@ -84,7 +84,7 @@ export default function Play() {
             {/* show messages UI */}
             {isJoinedRoom &&
                 <div className="flex flex-col items-center space-y-4">
-                    <h1 className="text-xl font-bold">Joined Room</h1>
+                    <h1 className="text-xl font-bold">Joined Room {name}</h1>
                     <div className="flex flex-col items-center space-y-2">
                         <input 
                             type="text" 

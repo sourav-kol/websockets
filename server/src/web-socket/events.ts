@@ -19,8 +19,8 @@ const joinRoom = (socket: Socket) => {
 const recieveMessageByRoom = (socket: Socket) => {
     socket.on(websocketEvents.CLIENTMSG, (request: clientMessageRequest) => {
         console.log('Message from client:', request);
-        // socket.to(request.roomId).emit(websocketEvents.SERVERMSG, request);
-        socket.emit(websocketEvents.SERVERMSG, request);
+        console.log('sending to:', request.roomId);
+        socket.to(request.roomId).emit(websocketEvents.SERVERMSG, request);
     });
 }
 
