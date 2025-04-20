@@ -23,12 +23,5 @@ io.on(websocketEvents.CONNECT, (socket) => {
 
 // })
 
-//todo:
-//clicks on create room
-//api call -> create uuid -> create socket room -> join socket room
-//store id in list 
-//display list of rooms
-//clicks on room -> join room -> join socket room
-
 
 expressServer();

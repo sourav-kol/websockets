@@ -1,0 +1,3 @@
+//https://socket.io/docs/v3/namespaces/
+//--undo buffer ?
+//https://www.figma.com/blog/how-figmas-multiplayer-technology-works/

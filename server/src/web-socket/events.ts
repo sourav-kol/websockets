@@ -11,8 +11,8 @@ const recieveMessage = (socket: Socket) => {
 const joinRoom = (socket: Socket) => {
     socket.on(websocketEvents.JOINROOM, (request: joinRoomRequest) => {
         var { roomId } = request;
-        console.log('joined ', socket.id, 'room ID:', roomId);
         socket.join(roomId);
+        console.log('joined ', socket.id, 'room ID:', roomId);
     });
 }
 
