@@ -8,8 +8,16 @@ export type clientMessageRequest = {
     sender: string
 }
 
+//--
 export type change = {
     text: string,
     insertAt: number,
     deleteAt: number
+}
+
+
+export type clientEditorMessageRequest = {
+    roomId: string, //to
+    message: change,
+    sender: string
 }

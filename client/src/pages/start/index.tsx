@@ -1,17 +1,16 @@
 'use client';
 
-import { joinRoomRequest, clientMessageRequest } from '@/types';
+import { joinRoomRequest, clientEditorMessageRequest, change } from '@/types';
 import { useEffect, useState } from 'react';
 import { io, Socket } from "socket.io-client";
-import JoinedRoom from '@/components/joinedRoom';
 import JoinRoom from '@/components/joinRoom';
+import Editor from '@/components/Editor';
 
-export default function Play() {
+export default function Start() {
     const [name, setName] = useState<string>("");
     const [socket, setSocket] = useState<Socket | null>(null); // Initialize socket as null
     const [isJoinedRoom, setIsJoindedRoom] = useState<boolean>(false);
-    const [message, setMessage] = useState<string>("");
-    const [serverMessage, setServerMessage] = useState<string[]>([]);
+    const [serverMessage, setServerMessage] = useState<change>();
 
     useEffect(() => {
         //todo: take from config files
@@ -24,16 +23,16 @@ export default function Play() {
             console.log("Connected to server");
         });
 
-        tempSocket.on("server_msg", (msg: clientMessageRequest) => {
+        tempSocket.on("server_msg", (msg: clientEditorMessageRequest) => {
             console.log("Message from server:", msg);
-            setServerMessage((prevMessages) => [...prevMessages, msg.message]);
+            setServerMessage((prevMessages) => msg.message);
         });
     }, []);
 
-    const sendMessage = () => {
-        var payload: clientMessageRequest = {
+    const sendMessage = (change: change) => {
+        var payload: clientEditorMessageRequest = {
             roomId: name,
-            message: message,
+            message: change,
             sender: (Math.random() * 1000).toString()
         }
         if (socket) {
@@ -57,11 +56,6 @@ export default function Play() {
         setName(name);
     };
 
-    const handleMessageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const message = event.target.value;
-        setMessage(message);
-    }
-
     return (
         <div className="h-screen flex items-center justify-center">
             {/* show join room UI */}
@@ -74,11 +68,8 @@ export default function Play() {
             }
             {/* show messages UI */}
             {isJoinedRoom &&
-                <JoinedRoom
-                    name={name}
-                    message={message}
+                <Editor
                     serverMessage={serverMessage}
-                    handleMessageChange={handleMessageChange}
                     sendMessage={sendMessage}
                 />
             }

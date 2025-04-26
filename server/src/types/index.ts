@@ -4,6 +4,6 @@ export type joinRoomRequest = {
 
 export type clientMessageRequest = {
     roomId: string, //to
-    message: string,
+    message: any, //change
     sender: string
 }
