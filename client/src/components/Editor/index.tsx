@@ -1,10 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { MergeChanges } from '@/automerger';
+import { change } from '@/types';
 
 type Prop = {
-    onClick: () => void;
 }
 export default function Editor(prop: Prop) {
     const [text, setText] = useState<string>("");
+
+    const [refresh, setRefresh] = useState<boolean>(false);
+
+    const onClick = () => {
+        setRefresh(!refresh);
+    };
+
+    useEffect(() => {
+        let remoteChange: change = {
+            insertAt: 9,
+            deleteAt: 0,
+            text: " user"
+        };
+
+        let t = MergeChanges("hey there", remoteChange);
+        setText(t);
+        
+    }, [refresh])
 
     return (
         <div className="h-screen flex flex-col items-center justify-center space-y-4">
@@ -16,7 +35,7 @@ export default function Editor(prop: Prop) {
             />
             <button
                 className="px-4 py-2 bg-blue-500 text-white rounded"
-                onClick={prop.onClick}
+                onClick={onClick}
             >
                 Submit
             </button>

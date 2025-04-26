@@ -7,3 +7,9 @@ export type clientMessageRequest = {
     message: string,
     sender: string
 }
+
+export type change = {
+    text: string,
+    insertAt: number,
+    deleteAt: number
+}
