@@ -3,6 +3,8 @@
 import { joinRoomRequest, clientMessageRequest } from '@/types';
 import { useEffect, useState } from 'react';
 import { io, Socket } from "socket.io-client";
+import JoinedRoom from '@/components/joinedRoom';
+import JoinRoom from '@/components/joinRoom';
 
 export default function Play() {
     const [name, setName] = useState<string>("");
@@ -64,53 +66,21 @@ export default function Play() {
         <div className="h-screen flex items-center justify-center">
             {/* show join room UI */}
             {!isJoinedRoom &&
-                <div className="flex flex-col items-center space-y-4">
-                    <h1 className="text-xl font-bold">Join Room</h1>
-                    <input 
-                        type="text" 
-                        placeholder="Enter your room name" 
-                        onChange={handleInputChange} 
-                        value={name} 
-                        className="border p-2 rounded"
-                    />
-                    <button 
-                        onClick={joinRoom} 
-                        className="px-4 py-2 bg-blue-500 text-white rounded"
-                    >
-                        Click to join room
-                    </button>
-                </div>
+                <JoinRoom
+                    name={name}
+                    handleInputChange={handleInputChange}
+                    onClick={joinRoom}
+                />
             }
             {/* show messages UI */}
             {isJoinedRoom &&
-                <div className="flex flex-col items-center space-y-4">
-                    <h1 className="text-xl font-bold">Joined Room {name}</h1>
-                    <div className="flex flex-col items-center space-y-2">
-                        <input 
-                            type="text" 
-                            placeholder="Enter your message" 
-                            onChange={handleMessageChange} 
-                            value={message} 
-                            className="border p-2 rounded"
-                        />
-                        <button 
-                            onClick={sendMessage} 
-                            className="px-4 py-2 bg-green-500 text-white rounded"
-                        >
-                            Click to send message
-                        </button>
-                    </div>
-                    <div className="w-full max-w-md">
-                        <h1 className="text-lg font-semibold">Messages</h1>
-                        <div className="space-y-2">
-                            {serverMessage.map((msg, index) => (
-                                <div key={index} className="p-2 border rounded">
-                                    {msg}
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
+                <JoinedRoom
+                    name={name}
+                    message={message}
+                    serverMessage={serverMessage}
+                    handleMessageChange={handleMessageChange}
+                    sendMessage={sendMessage}
+                />
             }
         </div>
     )
