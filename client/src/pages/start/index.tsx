@@ -8,6 +8,7 @@ import Editor from '@/components/Editor';
 
 export default function Start() {
     const [name, setName] = useState<string>("");
+    const [sender, setSender] = useState<string>((Math.random() * 1000).toString());
     const [socket, setSocket] = useState<Socket | null>(null); // Initialize socket as null
     const [isJoinedRoom, setIsJoindedRoom] = useState<boolean>(false);
     const [serverMessage, setServerMessage] = useState<change>();
@@ -24,8 +25,9 @@ export default function Start() {
         });
 
         tempSocket.on("server_msg", (msg: clientEditorMessageRequest) => {
-            console.log("Message from server:", msg);
-            setServerMessage((prevMessages) => msg.message);
+            console.log("Message from server:", msg, msg.sender != sender);
+            if(msg.sender != sender)
+                setServerMessage((prevMessages) => msg.message);
         });
     }, []);
 
@@ -33,7 +35,7 @@ export default function Start() {
         var payload: clientEditorMessageRequest = {
             roomId: name,
             message: change,
-            sender: (Math.random() * 1000).toString()
+            sender: sender
         }
         if (socket) {
             socket.emit("client_msg", payload);
@@ -69,6 +71,7 @@ export default function Start() {
             {/* show messages UI */}
             {isJoinedRoom &&
                 <Editor
+                    senderId={sender}
                     serverMessage={serverMessage}
                     sendMessage={sendMessage}
                 />

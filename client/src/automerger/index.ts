@@ -16,21 +16,28 @@ export function AutomergeTest() {
 
     let forkedByUser2 = Automerge.clone(doc)
     forkedByUser2 = Automerge.change(forkedByUser2, d => {
-        Automerge.splice(d, ["text"], 3, 3, " Greetings")
+        // Automerge.splice(d, ["text"], 3, 3, " Greetings")
+        Automerge.updateText(d, ["text"], " new text inserted...")
     })
 
     console.log("user B sees before merge: ", forkedByUser2.text) // "hello wonderful world"
 
-    const changesA = Automerge.getChanges(Automerge.init(), forkedByUser1)
-    const changesB = Automerge.getChanges(Automerge.init(), forkedByUser2)
+    // const changesA = Automerge.getChanges(Automerge.init(), forkedByUser1)
+    // const changesB = Automerge.getChanges(Automerge.init(), forkedByUser2)
 
-    let finalDocA = Automerge.applyChanges(Automerge.init(), [...changesA, ...changesB])
-    let finalDocB = Automerge.applyChanges(Automerge.init(), [...changesB, ...changesA])
+    // let finalDocA = Automerge.applyChanges(Automerge.init(), [...changesA, ...changesB])
+    // let finalDocB = Automerge.applyChanges(Automerge.init(), [...changesB, ...changesA])
+
+    // var x = Automerge.block(finalDocA[0], [], 3);
+    // console.log("x", x);
+    // Automerge.updateText(finalDocA[0], ["text"], " new text inserted...");
+
+    let finalDocA = Automerge.merge(forkedByUser1, forkedByUser2);
 
     //@ts-ignore
     console.log("After merge, User A sees:", finalDocA[0].text)
     //@ts-ignore
-    console.log("After merge, User B sees:", finalDocB[0].text)
+    // console.log("After merge, User B sees:", finalDocB[0].text)
 
     //output: 
     // Initial document: hello world
@@ -43,15 +50,18 @@ export function AutomergeTest() {
 
 export function MergeChanges(text: string, change: change): string {
     let localChange = Automerge.from({ text });
-    // console.log("Initial document:", localChange.text);
 
     let replica = Automerge.clone(localChange)
     let remoteChange = Automerge.change(replica, d => {
-        Automerge.splice(d, ["text"], change.insertAt, change.deleteAt, change.text);
+        Automerge.splice(d, ["text"], change.insertAt, change.deleteAt, change.text)
+
     });
 
-    localChange = Automerge.merge(localChange, remoteChange);
+    console.log("text remote ", remoteChange.text);
 
-    // console.log("Merged document:", localChange.text);
+    localChange = Automerge.merge(localChange, remoteChange);
+    // var x = Automerge.applyChanges(localChange, Automerge.getChanges(localChange, replica));
+    console.log("text after merge", localChange.text);
+
     return localChange.text as string;
 }
