@@ -1,4 +1,4 @@
-import { change } from "@/types";
+import { changeData } from "@/types";
 import { next as Automerge } from "@automerge/automerge"
 
 export function AutomergeTest() {
@@ -9,35 +9,36 @@ export function AutomergeTest() {
     // Fork the doc and make a change
     let forkedByUser1 = Automerge.clone(doc)
     forkedByUser1 = Automerge.change(forkedByUser1, d => {
-        Automerge.splice(d, ["text"], 5, 0, " wonderful")
+        Automerge.splice(d, ["text"], 6, 1, "")
     })
 
     console.log("user A sees before merge: ", forkedByUser1.text) // "hello wonderful world"
 
     let forkedByUser2 = Automerge.clone(doc)
     forkedByUser2 = Automerge.change(forkedByUser2, d => {
-        // Automerge.splice(d, ["text"], 3, 3, " Greetings")
-        Automerge.updateText(d, ["text"], " new text inserted...")
+        Automerge.splice(d, ["text"], 6, 1, "x")
+        // Automerge.updateText(d, ["text"], " new text inserted...")
     })
+
 
     console.log("user B sees before merge: ", forkedByUser2.text) // "hello wonderful world"
 
-    // const changesA = Automerge.getChanges(Automerge.init(), forkedByUser1)
-    // const changesB = Automerge.getChanges(Automerge.init(), forkedByUser2)
+    const changesA = Automerge.getChanges(Automerge.init(), forkedByUser1)
+    const changesB = Automerge.getChanges(Automerge.init(), forkedByUser2)
 
-    // let finalDocA = Automerge.applyChanges(Automerge.init(), [...changesA, ...changesB])
-    // let finalDocB = Automerge.applyChanges(Automerge.init(), [...changesB, ...changesA])
+    console.log("changesA", changesA);
+
+    let finalDocA = Automerge.applyChanges(Automerge.init(), [...changesA, ...changesB])
+    let finalDocB = Automerge.applyChanges(Automerge.init(), [...changesB, ...changesA])
 
     // var x = Automerge.block(finalDocA[0], [], 3);
     // console.log("x", x);
     // Automerge.updateText(finalDocA[0], ["text"], " new text inserted...");
 
-    let finalDocA = Automerge.merge(forkedByUser1, forkedByUser2);
-
-    //@ts-ignore
+    // @ts-ignore
     console.log("After merge, User A sees:", finalDocA[0].text)
-    //@ts-ignore
-    // console.log("After merge, User B sees:", finalDocB[0].text)
+    // @ts-ignore
+    console.log("After merge, User B sees:", finalDocB[0].text)
 
     //output: 
     // Initial document: hello world
@@ -47,21 +48,38 @@ export function AutomergeTest() {
     // index.ts:32 After merge, User B sees: hel Greetings wonderfulworld
 
 }
+//----
 
-export function MergeChanges(text: string, change: change): string {
-    let localChange = Automerge.from({ text });
+let localChange: Automerge.Doc<{ text: string }> = Automerge.init();
 
-    let replica = Automerge.clone(localChange)
-    let remoteChange = Automerge.change(replica, d => {
-        Automerge.splice(d, ["text"], change.insertAt, change.deleteAt, change.text)
-
+export function MergeChanges(changes: Automerge.Change[]): string {
+    var convertedChanges = changes.map((change: Automerge.Change) => {
+        return new Uint8Array(change);
     });
 
-    console.log("text remote ", remoteChange.text);
+    localChange = Automerge.applyChanges(localChange, convertedChanges)[0];
 
-    localChange = Automerge.merge(localChange, remoteChange);
-    // var x = Automerge.applyChanges(localChange, Automerge.getChanges(localChange, replica));
-    console.log("text after merge", localChange.text);
+    console.log("merged changes ", localChange.text);
 
     return localChange.text as string;
+}
+
+export function setInitialDocument(text: string) {
+    localChange = Automerge.from({ text });
+}
+
+export function getChanges(changes: changeData[]): Automerge.Change[] {
+    let replica = Automerge.clone(localChange);
+
+    changes.map((change: changeData) => {
+        console.log(change);
+        replica = Automerge.change(replica, d => {
+            Automerge.splice(d, ["text"], change.from as number, change.to as number, change.text)
+        });
+    })
+
+    var automergeChange = Automerge.getChanges(Automerge.init(), replica);
+
+    localChange = Automerge.applyChanges(localChange, automergeChange)[0];
+    return automergeChange;
 }

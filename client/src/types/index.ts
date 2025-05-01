@@ -21,3 +21,10 @@ export type clientEditorMessageRequest = {
     message: change,
     sender: string
 }
+
+export type changeData = {
+    op: string,
+    from?: number, 
+    to?: number,
+    text: string 
+}
