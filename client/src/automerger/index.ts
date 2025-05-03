@@ -1,5 +1,5 @@
 import { changeData } from "@/types";
-import { next as Automerge } from "@automerge/automerge"
+import { next as Automerge, change } from "@automerge/automerge"
 
 export function AutomergeTest() {
     let doc = Automerge.from({ text: "hello world" });
@@ -50,12 +50,17 @@ export function AutomergeTest() {
 }
 //----
 
-let localChange: Automerge.Doc<{ text: string }> = Automerge.init();
+// let localChange: Automerge.Doc<{ text: string }> = Automerge.init();
 
-export function MergeChanges(changes: Automerge.Change[]): string {
+export function MergeChanges(text: string, changes: Automerge.Change[]): string {
+    let localChange: Automerge.Doc<{ text: string }> = Automerge.init();
+    localChange = Automerge.from({ text });
+
     var convertedChanges = changes.map((change: Automerge.Change) => {
         return new Uint8Array(change);
     });
+
+    console.log("converted changes ", convertedChanges);
 
     localChange = Automerge.applyChanges(localChange, convertedChanges)[0];
 
@@ -64,11 +69,14 @@ export function MergeChanges(changes: Automerge.Change[]): string {
     return localChange.text as string;
 }
 
-export function setInitialDocument(text: string) {
-    localChange = Automerge.from({ text });
-}
+// export function setInitialDocument(text: string) {
+//     localChange = Automerge.from({ text });
+// }
 
-export function getChanges(changes: changeData[]): Automerge.Change[] {
+export function getChanges(text: string, changes: changeData[]): Automerge.Change[] {
+    let localChange: Automerge.Doc<{ text: string }> = Automerge.init();
+    localChange = Automerge.from({ text });
+
     let replica = Automerge.clone(localChange);
 
     changes.map((change: changeData) => {
@@ -81,5 +89,8 @@ export function getChanges(changes: changeData[]): Automerge.Change[] {
     var automergeChange = Automerge.getChanges(Automerge.init(), replica);
 
     localChange = Automerge.applyChanges(localChange, automergeChange)[0];
+    
+    console.log("localChange", Automerge.applyChanges(localChange, automergeChange));
+
     return automergeChange;
 }

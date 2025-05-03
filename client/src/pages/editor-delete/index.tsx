@@ -35,8 +35,8 @@ export default function Test() {
         console.log(diffFrom);
     }
     useEffect(() => {
-        difference();
-        // AutomergeTest();
+        // difference();
+        AutomergeTest();
     }, [])
     // return <Editor />
 

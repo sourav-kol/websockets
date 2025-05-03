@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MergeChanges, getChanges, setInitialDocument } from '@/automerger';
+import { MergeChanges, getChanges } from '@/automerger';
 import { changeData } from '@/types';
 import diff from 'fast-diff';
 
@@ -13,11 +13,12 @@ export default function Editor(prop: Props) {
     const [text, setText] = useState<string>("hey");
     const [oldText, setOldText] = useState<string>(text);
 
-    useEffect(() => {
-        setInitialDocument(text);
-    }, []);
+    // useEffect(() => {
+    //     // setInitialDocument(text);
+    // }, []);
 
     const syncChanges = (val: any) => {
+        console.log("sending changes to server: ", val);
         prop.sendMessage(val);
     }
 
@@ -30,7 +31,7 @@ export default function Editor(prop: Props) {
 
         //find the difference
         var diff = diffFinder(oldText, updatedText);
-        var automergeChange = getChanges(diff);
+        var automergeChange = getChanges(text, diff);
         syncChanges(automergeChange);
     }
 
@@ -39,8 +40,9 @@ export default function Editor(prop: Props) {
         if (!prop.serverMessage)
             return;
 
-        let mergedText = MergeChanges(prop.serverMessage);
+        let mergedText = MergeChanges(text, prop.serverMessage);
         setText(mergedText);
+        setOldText(mergedText);
     }, [prop.serverMessage])
 
     //todo: fix typescript and move to helper file
@@ -61,6 +63,7 @@ export default function Editor(prop: Props) {
                 index += data.length;
             }
         }
+        console.log("old: ", oldState, "new: ", newState);
         console.log("changes: ", changes);
 
         setOldText(newState);
@@ -69,17 +72,19 @@ export default function Editor(prop: Props) {
     }
 
     return (
-        <>
-            <h1>{prop.senderId}</h1>
-            <div className="h-screen flex flex-col items-center justify-center space-y-4">
+        <div className="h-screen flex flex-col items-center justify-center space-y-4">
+            <h1 className="text-xl font-bold">{prop.senderId}</h1>
+            <div className="w-3/4">
                 <textarea
-                    className="w-3/4 h-40 border p-2 rounded resize-none"
+                    rows={80}
+                    cols={300}
+                    className="w-full h-40 border p-2 rounded resize-none"
                     placeholder="Enter your text here..."
                     value={text}
                     onChange={handleTextChange}
                     id='editor'
                 />
             </div>
-        </>
+        </div>
     );
 }
