@@ -5,10 +5,11 @@ import { useEffect, useState } from 'react';
 import { io, Socket } from "socket.io-client";
 import JoinRoom from '@/components/joinRoom';
 import Editor from '@/components/Editor';
+import { v4 as uuidv4 } from 'uuid';
 
 export default function Start() {
     const [name, setName] = useState<string>("");
-    const [sender, setSender] = useState<string>((Math.random() * 1000).toString());
+    const [sender, setSender] = useState<string>(uuidv4());
     const [socket, setSocket] = useState<Socket | null>(null); // Initialize socket as null
     const [isJoinedRoom, setIsJoindedRoom] = useState<boolean>(false);
     const [serverMessage, setServerMessage] = useState<change>();
