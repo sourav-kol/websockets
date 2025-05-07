@@ -6,6 +6,7 @@ import { io, Socket } from "socket.io-client";
 import JoinRoom from '@/components/joinRoom';
 import Editor from '@/components/Editor';
 import { v4 as uuidv4 } from 'uuid';
+import { useStorage } from '@/helper/customHooks/useStorage';
 
 export default function Start() {
     const [name, setName] = useState<string>("");
@@ -13,6 +14,7 @@ export default function Start() {
     const [socket, setSocket] = useState<Socket | null>(null); // Initialize socket as null
     const [isJoinedRoom, setIsJoindedRoom] = useState<boolean>(false);
     const [serverMessage, setServerMessage] = useState<change>();
+    const { getStoreItem, setStoreItem } = useStorage();
 
     useEffect(() => {
         //todo: take from config files
@@ -20,6 +22,8 @@ export default function Start() {
         setSocket(tempSocket); // Set the socket state to the new socket instance
 
         console.log("sending...", tempSocket.id);
+
+        setStoreItem("socketId", tempSocket.id as string, "sessionStorage");
 
         tempSocket.on("connect", () => {
             console.log("Connected to server");

@@ -28,3 +28,5 @@ export type changeData = {
     to?: number,
     text: string 
 }
+
+export type storageType = 'sessionStorage'; //'session' | 'local';

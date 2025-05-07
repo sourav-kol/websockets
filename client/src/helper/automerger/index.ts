@@ -59,8 +59,7 @@ export function MergeChanges(text: string, changes: Automerge.Change[]): string 
     var convertedChanges = changes.map((change: Automerge.Change) => {
         return new Uint8Array(change);
     });
-
-    console.log("converted changes ", convertedChanges);
+    console.log("old changes", text);
 
     localChange = Automerge.applyChanges(localChange, convertedChanges)[0];
 
@@ -80,7 +79,6 @@ export function getChanges(text: string, changes: changeData[]): Automerge.Chang
     let replica = Automerge.clone(localChange);
 
     changes.map((change: changeData) => {
-        console.log(change);
         replica = Automerge.change(replica, d => {
             Automerge.splice(d, ["text"], change.from as number, change.to as number, change.text)
         });
@@ -89,8 +87,8 @@ export function getChanges(text: string, changes: changeData[]): Automerge.Chang
     var automergeChange = Automerge.getChanges(Automerge.init(), replica);
 
     localChange = Automerge.applyChanges(localChange, automergeChange)[0];
-    
-    console.log("localChange", Automerge.applyChanges(localChange, automergeChange));
+
+    console.log("localChange", localChange.text);
 
     return automergeChange;
 }
