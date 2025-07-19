@@ -46,7 +46,6 @@ export default function Editor(prop: Props) {
 
     //merging remote changes
     useEffect(() => {
-        console.log("prop: ", prop);
         if (!prop.serverMessage)
             return;
 
@@ -56,13 +55,13 @@ export default function Editor(prop: Props) {
     }, [prop.serverMessage]);
 
     return (
-        <div className="h-screen flex flex-col items-center justify-center space-y-4">
-            <h1 className="text-xl font-bold">{prop.senderId}</h1>
-            <div className="w-3/4">
+        <div className="h-screen flex flex-col items-center justify-center">
+            <h1 className="h-1/12 text-xl font-bold">{prop.senderId}</h1>
+            <div className="w-3/4 h-11/12">
                 <textarea
                     rows={80}
-                    cols={300}
-                    className="w-full h-40 border p-2 rounded resize-none"
+                    cols={500}
+                    className="bg-gray-800 w-full h-8/12 p-2 rounded resize-none"
                     placeholder="Enter your text here..."
                     value={text}
                     onChange={debounce}
