@@ -1,6 +1,7 @@
-import ChatGroupList from "@/components/chat/group-list";
 import { useState } from "react";
 import { chatGroup } from "@/types";
+import ChatGroupList from "@/components/chat/group-list";
+import ChatGroupDetail from "@/components/chat/group-detail";
 
 type Prop = {
 
@@ -8,8 +9,8 @@ type Prop = {
 
 export default function ChatLayout(props: Prop) {
 
-    const [chatGroups, setChatGroups] = useState<chatGroup[]>([{title: "school group"}, {title: "college group"}, {title: "work group"}]);
-
+    const [chatGroups, setChatGroups] = useState<chatGroup[]>([{ title: "school group" }, { title: "college group" }, { title: "work group" }]);
+    const [currentSelectedGroup, setCurrentSelectedGroup] = useState<chatGroup | null>({ title: "hehe group" });
     return (
         <>
             <div className="gap-1 h-[83vh] w-11/12 max-w-6xl mx-auto my-8 font-white grid grid-cols-[20%_60%_1fr]">
@@ -24,10 +25,10 @@ export default function ChatLayout(props: Prop) {
 
                 <div className="bg-primary rounded-md overflow-hidden h-full flex flex-col items-center justify-center">
                     <div className="w-full h-1/12 text-center shadow shadow-black/30 z-10">
-                        Group Name
+                        {currentSelectedGroup ? currentSelectedGroup.title : "Group Title"}
                     </div>
                     <div className="w-full h-11/12">
-                        main area
+                        <ChatGroupDetail data={currentSelectedGroup} />
                     </div>
                 </div>
 
