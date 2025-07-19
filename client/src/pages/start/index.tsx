@@ -7,6 +7,7 @@ import JoinRoom from '@/components/joinRoom';
 import Editor from '@/components/Editor';
 import { v4 as uuidv4 } from 'uuid';
 import { useStorage } from '@/helper/customHooks/useStorage';
+import { sessionStorageKeys, storageType } from '@/helper/constants';
 
 export default function Start() {
     const [name, setName] = useState<string>("");
@@ -23,7 +24,7 @@ export default function Start() {
 
         console.log("sending...", tempSocket.id);
 
-        setStoreItem("socketId", tempSocket.id as string, "sessionStorage");
+        setStoreItem(sessionStorageKeys.socketId, tempSocket.id as string, "sessionStorage");
 
         tempSocket.on("connect", () => {
             console.log("Connected to server");
@@ -31,7 +32,7 @@ export default function Start() {
 
         tempSocket.on("server_msg", (msg: clientEditorMessageRequest) => {
             console.log("Message from server:", msg, msg.sender != sender);
-            if(msg.sender != sender)
+            if (msg.sender != sender)
                 setServerMessage((prevMessages) => msg.message);
         });
     }, []);
@@ -56,6 +57,7 @@ export default function Start() {
             socket.emit("join_room", payload);
 
         setIsJoindedRoom(true);
+        setStoreItem(sessionStorageKeys.roomId, name, "sessionStorage");
     }
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
