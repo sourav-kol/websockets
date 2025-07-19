@@ -30,3 +30,7 @@ export type changeData = {
 }
 
 export type storageType = 'sessionStorage'; //'session' | 'local';
+
+export type chatGroup = {
+    title: string
+}
