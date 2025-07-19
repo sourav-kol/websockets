@@ -33,4 +33,5 @@ export type storageType = 'sessionStorage'; //'session' | 'local';
 
 export type chatGroup = {
     title: string
+    roomId: string
 }

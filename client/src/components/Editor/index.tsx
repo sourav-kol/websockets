@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useEffect, useRef } from 'react';
 import { MergeChanges, getChanges } from '@/helper/automerger';
 import { diffFinder } from '@/helper/textDiffHelper';
@@ -44,6 +46,7 @@ export default function Editor(prop: Props) {
 
     //merging remote changes
     useEffect(() => {
+        console.log("prop: ", prop);
         if (!prop.serverMessage)
             return;
 

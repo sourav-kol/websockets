@@ -9,8 +9,9 @@ type Prop = {
 
 export default function ChatLayout(props: Prop) {
 
-    const [chatGroups, setChatGroups] = useState<chatGroup[]>([{ title: "school group" }, { title: "college group" }, { title: "work group" }]);
-    const [currentSelectedGroup, setCurrentSelectedGroup] = useState<chatGroup | null>({ title: "hehe group" });
+    const [chatGroups, setChatGroups] = useState<chatGroup[]>([{ title: "school group", roomId: "1" }, { title: "college group", roomId: "2" }, { title: "work group", roomId: "3" }]);
+    const [currentSelectedGroup, setCurrentSelectedGroup] = useState<chatGroup | null>({ title: "hehe group", roomId: "4" });
+
     return (
         <>
             <div className="gap-1 h-[83vh] w-11/12 max-w-6xl mx-auto my-8 font-white grid grid-cols-[20%_60%_1fr]">
@@ -28,7 +29,7 @@ export default function ChatLayout(props: Prop) {
                         {currentSelectedGroup ? currentSelectedGroup.title : "Group Title"}
                     </div>
                     <div className="w-full h-11/12">
-                        <ChatGroupDetail data={currentSelectedGroup} />
+                        {currentSelectedGroup && <ChatGroupDetail chatData={currentSelectedGroup} />}
                     </div>
                 </div>
 
