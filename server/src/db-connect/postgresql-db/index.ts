@@ -1,6 +1,6 @@
 const { Client } = require('pg');
 
-let pgClient:any = null;
+var pgClient:any = null;
 
 export const dbClientInit = () => {
     pgClient = new Client({

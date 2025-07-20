@@ -1,11 +1,11 @@
 import dotenv from 'dotenv';
 
-import { expressServer, app } from './express-server';
+import { app, expressServer } from './express-server';
 import { io } from './web-socket';
 import { joinRoom, recieveMessageByRoom } from './web-socket/events';
 import { websocketEvents } from './helpers/constants';
 import { dbClientInit } from './db-connect';
-
+import { userController } from './controller/userController';
 
 dotenv.config();
 
@@ -22,9 +22,8 @@ io.on(websocketEvents.CONNECT, (socket) => {
   recieveMessageByRoom(socket);
 });
 
-dbClientInit()
-// console.log(sql`
-//     select *
-//     from test
-//   `);
+dbClientInit();
+
 expressServer();
+
+app.use('/user', userController);
