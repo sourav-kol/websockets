@@ -4,7 +4,7 @@ import { expressServer, app } from './express-server';
 import { io } from './web-socket';
 import { joinRoom, recieveMessageByRoom } from './web-socket/events';
 import { websocketEvents } from './helpers/constants';
-import { pgClientInit } from './postgres-db';
+import { dbClientInit } from './db-connect';
 
 
 dotenv.config();
@@ -22,7 +22,7 @@ io.on(websocketEvents.CONNECT, (socket) => {
   recieveMessageByRoom(socket);
 });
 
-pgClientInit()
+dbClientInit()
 // console.log(sql`
 //     select *
 //     from test
