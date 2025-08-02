@@ -1,5 +1,6 @@
-import { createUserSchema } from ".././repository/userRepository";
+import { createUser } from "../repository/userRepository";
+import { User } from '@/types';
 
-export const createUserSchemaAsync = async () => {
-    await createUserSchema();
+export const createUserAsync = async (user: User) => {
+    await createUser(user);
 }

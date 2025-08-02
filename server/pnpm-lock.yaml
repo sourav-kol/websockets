@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@prisma/client':
-        specifier: 6.12.0
-        version: 6.12.0(prisma@6.12.0(typescript@5.8.2))(typescript@5.8.2)
       cors:
         specifier: ^2.8.5
         version: 2.8.5
@@ -36,6 +33,9 @@ importers:
         specifier: ^11.1.0
         version: 11.1.0
     devDependencies:
+      '@prisma/client':
+        specifier: 6.12.0
+        version: 6.12.0(prisma@6.12.0(typescript@5.8.2))(typescript@5.8.2)
       '@types/cors':
         specifier: ^2.8.17
         version: 2.8.17

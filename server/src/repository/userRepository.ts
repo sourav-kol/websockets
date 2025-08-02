@@ -1,23 +1,16 @@
-import { dbContext } from '../db-connect/postgresql-db';
+import { PrismaClient } from '../../src/prisma/src/db'
+import { User } from '@/types';
 
-var userSchema = `
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+const prisma = new PrismaClient();
 
-CREATE TABLE users (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    name VARCHAR(100) NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
-    password TEXT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-`
-
-export const createUserSchema = async () => {
-    await dbContext().query(userSchema)
-        .then(() => {
-            console.log("User table created successfully");
-        })
-        .catch((err: any) => {
-            console.error("Error creating user table:", err);
+export const createUser = async (user: User) => {
+    try {
+        const result = await prisma.user.create({
+            data: user
         });
+        return result;
+    } catch (error) {
+        console.error("Error creating user:", error);
+        throw error;
+    }    
 }

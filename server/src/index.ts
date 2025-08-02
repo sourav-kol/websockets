@@ -4,8 +4,8 @@ import { app, expressServer } from './express-server';
 import { io } from './web-socket';
 import { joinRoom, recieveMessageByRoom } from './web-socket/events';
 import { websocketEvents } from './helpers/constants';
-import { dbClientInit } from './db-connect';
 import { userController } from './controller/userController';
+import { groupController } from './controller/groupController';
 
 dotenv.config();
 
@@ -22,8 +22,7 @@ io.on(websocketEvents.CONNECT, (socket) => {
   recieveMessageByRoom(socket);
 });
 
-dbClientInit();
+app.use('/group', groupController);
+app.use('/user', userController);
 
 expressServer();
-
-app.use('/user', userController);

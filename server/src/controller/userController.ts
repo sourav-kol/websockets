@@ -1,17 +1,20 @@
-import { router } from "../express-server/index";
-import { createUserSchemaAsync } from ".././service/userService";
+import { express } from "../express-server/index";
+import { createUserAsync } from "../service/userService";
 import { Request, Response } from "express";
+import { User } from '@/types';
 
+const router = express.Router();
 
-const createUserSchema = async (req: Request, res: Response) => {
+const createUser = async (req: Request, res: Response) => {
+    console.log("Creating user with data:", req.body);
     try {
-        await createUserSchemaAsync();
-        res.status(200).send("User schema created successfully.");
+        await createUserAsync(req.body as User);
+        res.status(200).send("User created successfully.");
     } catch (ex) {
         res.status(500).send({ ex });
     }
 }
 
-router.get("/schema", createUserSchema);
+router.get("", createUser);
 
 export { router as userController };

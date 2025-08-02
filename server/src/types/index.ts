@@ -7,3 +7,13 @@ export type clientMessageRequest = {
     message: any, //change
     sender: string
 }
+
+export type User = {
+    name: string;
+    email: string;
+    password: string;    
+}
+
+export type Group = {
+    name: string;
+}
