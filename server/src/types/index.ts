@@ -17,3 +17,13 @@ export type User = {
 export type Group = {
     name: string;
 }
+
+export type GroupMember = {
+    userId: string;
+    groupId: string;
+}
+
+export type Document = {
+    content: string;
+    groupId: string;
+}

@@ -6,7 +6,6 @@ import { User } from '@/types';
 const router = express.Router();
 
 const createUser = async (req: Request, res: Response) => {
-    console.log("Creating user with data:", req.body);
     try {
         await createUserAsync(req.body as User);
         res.status(200).send("User created successfully.");

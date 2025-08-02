@@ -29,9 +29,11 @@ model Group {
   name        String
   createdBy   User?         @relation("CreatedGroups", fields: [createdById], references: [id])
   createdById String?
+  createdAt   DateTime      @default(now())
+
   members     GroupMember[] @relation("GroupMembers")
   messages    Message[]
-  createdAt   DateTime      @default(now())
+  document Document? @relation("GroupDocument")
 }
 
 model GroupMember {
@@ -43,6 +45,14 @@ model GroupMember {
   joinedAt DateTime @default(now())
 
   @@unique([userId, groupId])
+}
+
+model Document {
+  id         String   @id @default(uuid())
+  content    String
+
+  group Group @relation("GroupDocument", fields:[groupId], references:[id])
+  groupId String @unique
 }
 
 model Message {

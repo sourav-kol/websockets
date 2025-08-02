@@ -6,6 +6,8 @@ import { joinRoom, recieveMessageByRoom } from './web-socket/events';
 import { websocketEvents } from './helpers/constants';
 import { userController } from './controller/userController';
 import { groupController } from './controller/groupController';
+import { memberController } from './controller/groupMemberController';
+import { documentController } from './controller/documentController';
 
 dotenv.config();
 
@@ -24,5 +26,7 @@ io.on(websocketEvents.CONNECT, (socket) => {
 
 app.use('/group', groupController);
 app.use('/user', userController);
+app.use('/group-member', memberController);
+app.use('/document', documentController);
 
 expressServer();

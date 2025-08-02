@@ -11,7 +11,6 @@ const app = express();
 app.use(cors(corsOptions));
 
 const httpServer = http.createServer(app);
-//not used
 
 const expressServer = () => httpServer.listen(port, () => {
     console.log(`Server is running at http://localhost:${port},\nclick to open it in browser`);
