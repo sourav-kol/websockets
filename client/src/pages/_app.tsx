@@ -11,7 +11,7 @@ export default function App({ Component, pageProps }: AppProps) {
           Chat Application
         </div>
       </div>
-      <div className="w-full h-[85vh]">
+      <div className="w-full h-[85vh] overflow-hidden">
         <Component {...pageProps} />
       </div>
     </SocketProvider>

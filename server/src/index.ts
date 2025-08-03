@@ -20,8 +20,8 @@ io.on(websocketEvents.CONNECT, (socket) => {
   //   console.log('Client disconnected:', socket.id);
   // });
 
-  joinRoom(socket);
-  recieveMessageByRoom(socket);
+//  joinRoom(socket);
+  //recieveMessageByRoom(socket);
 });
 
 app.use('/group', groupController);
