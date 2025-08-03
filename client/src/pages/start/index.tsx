@@ -3,8 +3,8 @@
 import { joinRoomRequest, clientEditorMessageRequest, change } from '@/types';
 import { useEffect, useState } from 'react';
 import { io, Socket } from "socket.io-client";
-import JoinRoom from '@/components/joinRoom';
-import Editor from '@/components/Editor';
+import JoinRoom from '@/components/room/join-room';
+import Editor from '@/components/editor/text-area';
 import { v4 as uuidv4 } from 'uuid';
 import { useStorage } from '@/helper/customHooks/useStorage';
 import { sessionStorageKeys, storageType } from '@/helper/constants';

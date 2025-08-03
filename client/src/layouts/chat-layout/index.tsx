@@ -14,7 +14,7 @@ export default function ChatLayout(props: Prop) {
     const [currentSelectedGroup, setCurrentSelectedGroup] = useState<chatGroup | null>({ title: "hehe group", roomId: "testers" });
     //take from user context
     const [sender, setSender] = useState<string>("");
-    
+
     useEffect(() => {
         setSender(uuidv4());
     }, [])

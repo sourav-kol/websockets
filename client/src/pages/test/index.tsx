@@ -3,8 +3,8 @@
 import { joinRoomRequest, clientMessageRequest } from '@/types';
 import { useEffect, useState } from 'react';
 import { io, Socket } from "socket.io-client";
-import JoinedRoom from '@/components/joinedRoom';
-import JoinRoom from '@/components/joinRoom';
+import JoinedRoom from '@/components/room/joined-room';
+import JoinRoom from '@/components/room/join-room';
 
 export default function Play() {
     const [name, setName] = useState<string>("");

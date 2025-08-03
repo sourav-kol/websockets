@@ -8,6 +8,7 @@ export default function User() {
             <FormCard
                 title="Enter User Name"
                 placeholder="Enter your name"
+                //@ts-expect-error
                 onSubmit={(e) => { console.log(e); e.preventDefault(); }}>
             </FormCard>
         </div>
