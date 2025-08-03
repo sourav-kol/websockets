@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { joinRoomRequest, clientEditorMessageRequest, change, chatGroup } from '@/types';
 import { useSocket } from '@/context/socket-provider';
 import Editor from '@/components/editor/text-area';
-import { socketMessageEvent } from '@/constants';
+import { socketMessageEvent } from '@/constants/websocketConstants';
 
 type Prop = {
     chatData: chatGroup,

@@ -17,7 +17,7 @@ export default function FormCard(props: Prop) {
             <h2 className="text-2xl text-center">{props.title}</h2>
             <form onSubmit={props.onSubmit} className="flex flex-col items-center">
                 <input type="text" className="w-4/5 border-2 border-black-50" placeholder={props.placeholder}></input>
-                <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded mt-2">{props.buttonText ?? "create"}</button>
+                <button type="submit" className="bg-black text-white px-4 py-2 rounded mt-2">{props.buttonText ?? "create"}</button>
             </form>
         </div>
     )

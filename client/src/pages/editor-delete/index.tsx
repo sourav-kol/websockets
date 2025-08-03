@@ -2,7 +2,7 @@
 
 import React, { useEffect } from 'react';
 // import Editor from '@/components/Editor';
-import { AutomergeTest, MergeChanges } from '@/helper/automerger';
+import { AutomergeTest, MergeChanges } from '@/helper/automerger/automergerHelper';
 import diff from 'fast-diff';
 
 export default function Test() {

@@ -1,6 +1,8 @@
 import { changeData } from "@/types";
-import { next as Automerge, change } from "@automerge/automerge"
+import { next as Automerge } from "@automerge/automerge"
 
+//for testing purpose
+//to be deleted later
 export function AutomergeTest() {
     let doc = Automerge.from({ text: "hello world" });
 

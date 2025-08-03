@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { MergeChanges, getChanges } from '@/helper/automerger';
-import { diffFinder } from '@/helper/textDiffHelper';
+import { MergeChanges, getChanges } from '@/helper/automerger/automergerHelper';
+import { diffFinder } from '@/helper/textDifference/textDiffHelper';
 
 type Props = {
     senderId: string
