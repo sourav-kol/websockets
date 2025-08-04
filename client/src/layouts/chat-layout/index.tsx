@@ -4,16 +4,20 @@ import { v4 as uuidv4 } from 'uuid';
 import { chatGroup } from "@/types";
 import ChatGroupList from "@/components/chat/group-list";
 import ChatGroupDetail from "@/components/chat/group-detail";
+import { useStorage } from "@/hooks/useStorage";
+import { sessionStorageKey } from "@/constants/constants";
 
 type Prop = {
 
 }
 
 export default function ChatLayout(props: Prop) {
+    const { getStoreItem } = useStorage();
+
     const [chatGroups, setChatGroups] = useState<chatGroup[]>([{ title: "school group", roomId: "1" }, { title: "college group", roomId: "2" }, { title: "work group", roomId: "3" }]);
     const [currentSelectedGroup, setCurrentSelectedGroup] = useState<chatGroup | null>({ title: "hehe group", roomId: "testers" });
     //take from user context
-    const [sender, setSender] = useState<string>("");
+    const [sender, setSender] = useState<string>(getStoreItem(sessionStorageKey.userId));
 
     useEffect(() => {
         setSender(uuidv4());

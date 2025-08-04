@@ -15,6 +15,6 @@ const createGroup = async (req: Request, res: Response) => {
     }
 }
 
-router.get("", createGroup);
+router.post("", createGroup);
 
 export { router as groupController };

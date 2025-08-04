@@ -6,7 +6,7 @@ type Prop = {
     title: string;
     placeholder: string;
     buttonText?: string;
-    onSubmit: (e: any) => {} //(e: FormEvent<HTMLFormElement>) => {}
+    onSubmit: (e: FormEvent<HTMLFormElement>) => {}
 }
 
 export default function FormCard(props: Prop) {

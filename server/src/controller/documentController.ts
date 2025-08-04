@@ -14,6 +14,6 @@ const createDocument = async (req: Request, res: Response) => {
     }
 }
 
-router.get("", createDocument);
+router.post("", createDocument);
 
 export { router as documentController };

@@ -7,13 +7,13 @@ const router = express.Router();
 
 const createUser = async (req: Request, res: Response) => {
     try {
-        await createUserAsync(req.body as User);
-        res.status(200).send("User created successfully.");
+        var result = await createUserAsync(req.body as User);
+        res.status(200).send(result);
     } catch (ex) {
         res.status(500).send({ ex });
     }
 }
 
-router.get("", createUser);
+router.post("", createUser);
 
 export { router as userController };

@@ -1,9 +1,12 @@
 import ChatLayout from "@/layouts/chat-layout";
+import { SocketProvider } from "@/context/socket-provider";
 
 export default function Home() {
     return (
-        <div className="font-black">
-            <ChatLayout />
-        </div>
+        <SocketProvider>
+            <div className="font-black">
+                <ChatLayout />
+            </div>
+        </SocketProvider>
     );
 }

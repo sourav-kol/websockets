@@ -35,3 +35,9 @@ export type chatGroup = {
     title: string
     roomId: string
 }
+
+export type User = {
+    name: string;
+    email: string;
+    password: string;    
+}

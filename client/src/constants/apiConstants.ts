@@ -2,9 +2,9 @@ const Baseurl = "http://localhost:8080";
 
 export const ApiRoutes = {
     User:{
-        CreateUser: `/user`,
+        CreateUser: `${Baseurl}/user`,
     },
     Group: {
-        CreateGroup:"/group"
+        CreateGroup:`${Baseurl}/group`
     }
 }

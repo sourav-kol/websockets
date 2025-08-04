@@ -4,3 +4,7 @@ export const socketMessageEvent = {
     clientMessage: "client_msg",
     joinRoom: "join_room",
 };
+
+export const sessionStorageKey = {
+    userId: "userId"
+}

@@ -14,6 +14,6 @@ const addGroupMember = async (req: Request, res: Response) => {
     }
 }
 
-router.get("", addGroupMember);
+router.post("", addGroupMember);
 
 export { router as memberController };
