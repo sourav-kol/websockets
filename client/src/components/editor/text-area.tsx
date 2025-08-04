@@ -56,7 +56,7 @@ export default function Editor(prop: Props) {
 
     return (
         <div className="h-screen flex flex-col items-center justify-center">
-            <h1 className="h-1/12 text-xl font-bold">{prop.senderId}</h1>
+            {/* <h1 className="h-1/12 text-xl font-bold">{prop.senderId}</h1> */}
             <div className="w-3/4 h-11/12">
                 <textarea
                     rows={80}
