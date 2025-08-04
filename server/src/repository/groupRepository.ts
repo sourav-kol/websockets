@@ -8,7 +8,7 @@ export const createGroup = async (group: Group) => {
         const result = await prisma.group.create({
             data: group
         });
-        return result;
+        // return result;
     } catch (error) {
         console.error("Error creating group:", error);
         throw error;
