@@ -37,7 +37,7 @@ export default function ChatLayout(props: Prop) {
                         My Groups
                     </div>
                     <div className="bg-primary h-11/12 overflow-y-scroll">
-                        <ChatGroupList data={chatGroups} />
+                        <ChatGroupList data={chatGroups} selectGroup={setCurrentSelectedGroup} />
                     </div>
                 </div>
 

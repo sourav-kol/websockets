@@ -18,7 +18,7 @@ export default function Editor(prop: Props) {
 
     useEffect(() => {
         setText(prop.documentText); //init
-    }, []);
+    }, [prop.documentText]);
 
     const syncChanges = (val: any) => {
         prop.sendMessage(val);
