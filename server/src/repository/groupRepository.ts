@@ -12,5 +12,35 @@ export const createGroup = async (group: Group) => {
     } catch (error) {
         console.error("Error creating group:", error);
         throw error;
-    }    
+    }
+}
+
+export const getPagedGroupsByUserId = async (userId: string): Promise<any[]> => {
+    try {
+        const groupIds = await prisma.groupMember.findMany({
+            where: {
+                userId: {
+                    equals: userId
+                }
+            },
+            select: {
+                groupId: true
+            }
+        });
+
+        var groups = prisma.group.findMany({
+            where: {
+                id: {
+                    in: groupIds.map((group) => group.groupId)}
+            },
+            include: {
+                members: true,
+            }
+        });             
+        
+        return groups;
+    } catch (error) {
+        console.error("Error fetching groups:", error);
+        throw error;
+    }
 }

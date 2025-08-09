@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { v4 as uuidv4 } from 'uuid';
 
 import { chatGroup } from "@/types";
 import ChatGroupList from "@/components/chat/group-list";
 import ChatGroupDetail from "@/components/chat/group-detail";
 import { useStorage } from "@/hooks/useStorage";
-import { sessionStorageKey } from "@/constants/constants";
+import { localStorageKey } from "@/constants/constants";
+import { getPagedGroupsByUserId } from "@/service/groupService";
 
 type Prop = {
 
@@ -14,13 +14,18 @@ type Prop = {
 export default function ChatLayout(props: Prop) {
     const { getStoreItem } = useStorage();
 
-    const [chatGroups, setChatGroups] = useState<chatGroup[]>([{ title: "school group", roomId: "1" }, { title: "college group", roomId: "2" }, { title: "work group", roomId: "3" }]);
-    const [currentSelectedGroup, setCurrentSelectedGroup] = useState<chatGroup | null>({ title: "hehe group", roomId: "testers" });
+    const [chatGroups, setChatGroups] = useState<chatGroup[]>([]);
+    const [currentSelectedGroup, setCurrentSelectedGroup] = useState<chatGroup | null>({ name: "hehe group", id: "testers" });
     //take from user context
-    const [sender, setSender] = useState<string>(getStoreItem(sessionStorageKey.userId));
+    const [sender, setSender] = useState<string>(getStoreItem(localStorageKey.userId));
 
     useEffect(() => {
-        setSender(uuidv4());
+        getPagedGroupsByUserId(getStoreItem(localStorageKey.userId))
+            .then((data) => {
+                setChatGroups(data);
+            }).catch((error) => {
+                console.error("Error fetching chat groups:", error);
+            });
     }, [])
 
     return (
@@ -37,7 +42,7 @@ export default function ChatLayout(props: Prop) {
 
                 <div className="bg-primary rounded-md overflow-hidden h-full flex flex-col items-center justify-center">
                     <div className="w-full h-1/12 text-center shadow shadow-white/50 z-10">
-                        {currentSelectedGroup ? currentSelectedGroup.title : "Group Title"}
+                        {currentSelectedGroup ? currentSelectedGroup.name : "Group Title"}
                     </div>
                     <div className="w-full h-11/12">
                         {currentSelectedGroup && <ChatGroupDetail chatData={currentSelectedGroup} sender={sender} />}

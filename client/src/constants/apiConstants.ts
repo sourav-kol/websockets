@@ -5,6 +5,7 @@ export const ApiRoutes = {
         CreateUser: `${Baseurl}/user`,
     },
     Group: {
-        CreateGroup:`${Baseurl}/group`
+        CreateGroup:`${Baseurl}/group`,
+        PagedList: `${Baseurl}/group/paged`,
     }
 }

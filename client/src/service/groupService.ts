@@ -10,3 +10,12 @@ export const createGroup = async (group: Group): Promise<string> => {
         throw error;
     }
 }
+
+export const getPagedGroupsByUserId = async (userId: string): Promise<any[]> => {
+    try {
+        const response = await axios.post(ApiRoutes.Group.PagedList, { userId });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}

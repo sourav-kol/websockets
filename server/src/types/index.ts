@@ -16,6 +16,7 @@ export type User = {
 
 export type Group = {
     name: string;
+    createedById: string;
 }
 
 export type GroupMember = {

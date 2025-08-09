@@ -36,7 +36,7 @@ export default function ChatGroupDetail(props: Prop) {
 
     const joinRoom = () => {
         var payload: joinRoomRequest = {
-            roomId: chatData.roomId
+            roomId: chatData.id
         }
         if (socket)
             socket.emit(socketMessageEvent.joinRoom, payload);
@@ -44,7 +44,7 @@ export default function ChatGroupDetail(props: Prop) {
 
     const sendMessage = (change: change) => {
         var payload: clientEditorMessageRequest = {
-            roomId: chatData.roomId,
+            roomId: chatData.id,
             message: change,
             sender: sender
         }

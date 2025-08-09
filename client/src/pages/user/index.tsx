@@ -5,7 +5,7 @@ import { createUser } from "@/service/userService";
 import { User } from "@/types";
 import { useStorage } from "@/hooks/useStorage";
 import { useRouter } from 'next/navigation'
-import { sessionStorageKey } from "@/constants/constants";
+import { localStorageKey } from "@/constants/constants";
 
 
 export default function CreateUser() {
@@ -13,7 +13,7 @@ export default function CreateUser() {
     const router = useRouter();
 
     useEffect(() => {
-        getStoreItem(sessionStorageKey.userId) && router.push("/collaborate");
+        getStoreItem(localStorageKey.userId) && router.push("/collaborate");
     }, [])
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -27,7 +27,7 @@ export default function CreateUser() {
         
         createUser(user)
             .then(res => {
-                setStoreItem(sessionStorageKey.userId, res);
+                setStoreItem(localStorageKey.userId, res);
                 router.push("/collaborate");
             });
 

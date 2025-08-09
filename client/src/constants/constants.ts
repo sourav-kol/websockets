@@ -5,6 +5,6 @@ export const socketMessageEvent = {
     joinRoom: "join_room",
 };
 
-export const sessionStorageKey = {
+export const localStorageKey = {
     userId: "userId"
 }

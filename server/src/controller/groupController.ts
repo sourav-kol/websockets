@@ -1,5 +1,5 @@
 import { express } from "../express-server/index";
-import { createGroupAsync } from "../service/groupService";
+import { createGroupAsync, getPagedGroupsByUserIdAsync } from "../service/groupService";
 import { Request, Response } from "express";
 import { Group } from '@/types';
 
@@ -14,6 +14,17 @@ const createGroup = async (req: Request, res: Response) => {
     }
 }
 
+export const getPagedGroupsByUserId = async (req: Request, res: Response) => {
+    const { userId } = req.body;
+    try {
+        const groups = await getPagedGroupsByUserIdAsync(userId);
+        res.status(200).send(groups);
+    } catch (ex) {
+        res.status(500).send({ ex });
+    }
+}
+
 router.post("", createGroup);
+router.post("/paged", getPagedGroupsByUserId);
 
 export { router as groupController };

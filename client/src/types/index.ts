@@ -29,11 +29,11 @@ export type changeData = {
     text: string 
 }
 
-export type storageType = 'sessionStorage'; //'session' | 'local';
+export type storageType = 'localStorage'; //'session' | 'local';
 
 export type chatGroup = {
-    title: string
-    roomId: string
+    name: string
+    id: string
 }
 
 export type User = {
@@ -44,4 +44,5 @@ export type User = {
 
 export type Group = {
     name: string;
+    createdById:string;
 }

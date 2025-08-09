@@ -11,10 +11,10 @@ export default function ChatGroupList(props: Prop) {
     return (
         <div className="gap-0.5 flex flex-col">
             {data.map((group, index) =>
-                <div key={group.title + index} className="p-2 border-cyan-50 border-b-1 flex flex-col">
+                <div key={group.name + index} className="p-2 border-cyan-50 border-b-1 flex flex-col">
                     <span className="">
                         <h3>
-                            {group.title}
+                            {group.name}
                         </h3>
                     </span>
                     <span>
