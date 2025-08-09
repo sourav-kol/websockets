@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { chatGroup } from "@/types";
+import { chatGroup, GroupResponse } from "@/types";
 import ChatGroupList from "@/components/chat/group-list";
 import ChatGroupDetail from "@/components/chat/group-detail";
 import { useStorage } from "@/hooks/useStorage";
@@ -14,8 +14,8 @@ type Prop = {
 export default function ChatLayout(props: Prop) {
     const { getStoreItem } = useStorage();
 
-    const [chatGroups, setChatGroups] = useState<chatGroup[]>([]);
-    const [currentSelectedGroup, setCurrentSelectedGroup] = useState<chatGroup | null>({ name: "hehe group", id: "testers" });
+    const [chatGroups, setChatGroups] = useState<GroupResponse[]>([]);
+    const [currentSelectedGroup, setCurrentSelectedGroup] = useState<GroupResponse>();
     //take from user context
     const [sender, setSender] = useState<string>(getStoreItem(localStorageKey.userId));
 
@@ -23,6 +23,7 @@ export default function ChatLayout(props: Prop) {
         getPagedGroupsByUserId(getStoreItem(localStorageKey.userId))
             .then((data) => {
                 setChatGroups(data);
+                setCurrentSelectedGroup(data[0]);
             }).catch((error) => {
                 console.error("Error fetching chat groups:", error);
             });

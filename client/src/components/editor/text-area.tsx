@@ -7,13 +7,18 @@ import { diffFinder } from '@/helper/textDifference/textDiffHelper';
 type Props = {
     senderId: string
     serverMessage: any | undefined,
-    sendMessage: (change: any) => void
+    sendMessage: (change: any) => void,
+    documentText: string
 }
 
 export default function Editor(prop: Props) {
-    const [text, setText] = useState<string>("hey");
+    const [text, setText] = useState<string>("");
     const [oldText, setOldText] = useState<string>(text);
     const timeoutRef = useRef(null);
+
+    useEffect(() => {
+        setText(prop.documentText); //init
+    }, []);
 
     const syncChanges = (val: any) => {
         prop.sendMessage(val);

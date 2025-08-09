@@ -2,13 +2,13 @@
 
 import { useEffect, useState } from 'react';
 
-import { joinRoomRequest, clientEditorMessageRequest, change, chatGroup } from '@/types';
+import { joinRoomRequest, clientEditorMessageRequest, change, chatGroup, GroupResponse } from '@/types';
 import { useSocket } from '@/context/socket-provider';
 import Editor from '@/components/editor/text-area';
 import { socketMessageEvent } from '@/constants/constants';
 
 type Prop = {
-    chatData: chatGroup,
+    chatData: GroupResponse,
     sender: string
 }
 
@@ -62,6 +62,7 @@ export default function ChatGroupDetail(props: Prop) {
                 senderId={sender}
                 serverMessage={serverMessage}
                 sendMessage={sendMessage}
+                documentText={chatData.document.content}
             />
         </div>
     );

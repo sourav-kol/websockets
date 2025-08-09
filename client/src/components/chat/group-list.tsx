@@ -1,9 +1,9 @@
 'use client';
 
-import { chatGroup } from "@/types";
+import { GroupResponse } from "@/types";
 
 type Prop = {
-    data: chatGroup[]
+    data: GroupResponse[]
 }
 
 export default function ChatGroupList(props: Prop) {

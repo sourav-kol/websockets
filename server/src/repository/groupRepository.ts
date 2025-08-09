@@ -1,5 +1,5 @@
 import { PrismaClient } from '../../src/prisma/src/db'
-import { Group } from '@/types';
+import { Group, GroupResponse } from '@/types';
 
 const prisma = new PrismaClient();
 
@@ -15,7 +15,7 @@ export const createGroup = async (group: Group) => {
     }
 }
 
-export const getPagedGroupsByUserId = async (userId: string): Promise<any[]> => {
+export const getPagedGroupsByUserId = async (userId: string): Promise<GroupResponse[]> => {
     try {
         const groupIds = await prisma.groupMember.findMany({
             where: {
@@ -35,10 +35,12 @@ export const getPagedGroupsByUserId = async (userId: string): Promise<any[]> => 
             },
             include: {
                 members: true,
+                document: true
             }
         });             
         
-        return groups;
+        //@ts-expect-error
+        return groups as GroupResponse[];
     } catch (error) {
         console.error("Error fetching groups:", error);
         throw error;

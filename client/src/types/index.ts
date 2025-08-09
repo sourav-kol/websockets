@@ -46,3 +46,25 @@ export type Group = {
     name: string;
     createdById:string;
 }
+
+type MemberResponse = {
+  id: string
+  userId: string
+  groupId: string
+  joinedAt: string
+}
+
+type DocumentResposne = {
+  id: string
+  content: string
+  groupId: string
+}
+
+export type GroupResponse = {
+  id: string
+  name: string
+  createdById: string
+  createdAt: string
+  members: MemberResponse[]
+  document: DocumentResposne
+}
