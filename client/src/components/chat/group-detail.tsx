@@ -32,7 +32,7 @@ export default function ChatGroupDetail(props: Prop) {
             joinRoom();
         }
 
-    }, [socket]);
+    }, [socket, chatData.id]);
 
     const joinRoom = () => {
         var payload: joinRoomRequest = {
