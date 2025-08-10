@@ -28,11 +28,13 @@ export default function ChatGroupDetail(props: Prop) {
                 if (msg.sender != sender)
                     setServerMessage((prevMessages) => msg.message);
             });
-
-            joinRoom();
         }
 
-    }, [socket, chatData.id]);
+    }, [socket]);
+
+    useEffect(() => {
+        joinRoom();
+    }, [chatData.id]);
 
     const joinRoom = () => {
         var payload: joinRoomRequest = {
