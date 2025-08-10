@@ -52,44 +52,46 @@ export function AutomergeTest() {
 }
 //----
 
-// let localChange: Automerge.Doc<{ text: string }> = Automerge.init();
+let localChange: Automerge.Doc<{ text: string }> = Automerge.init();
+
+export function setInitialDocument(text: string) {
+    localChange = Automerge.from({ text });
+}
 
 export function MergeChanges(text: string, changes: Automerge.Change[]): string {
-    let localChange: Automerge.Doc<{ text: string }> = Automerge.init();
-    localChange = Automerge.from({ text });
-
     var convertedChanges = changes.map((change: Automerge.Change) => {
         return new Uint8Array(change);
     });
-    console.log("old changes", text);
 
     localChange = Automerge.applyChanges(localChange, convertedChanges)[0];
 
     console.log("merged changes ", localChange.text);
 
     return localChange.text as string;
+
 }
 
-// export function setInitialDocument(text: string) {
-//     localChange = Automerge.from({ text });
-// }
+
 
 export function getChanges(text: string, changes: changeData[]): Automerge.Change[] {
-    let localChange: Automerge.Doc<{ text: string }> = Automerge.init();
-    localChange = Automerge.from({ text });
+    let replica: Automerge.Doc<{ text: string }> = Automerge.init();
+    replica = Automerge.from({ text })
 
-    let replica = Automerge.clone(localChange);
-
-    changes.map((change: changeData) => {
-        replica = Automerge.change(replica, d => {
+    replica = Automerge.change(replica, d => {
+        changes.map((change: changeData) => {
             Automerge.splice(d, ["text"], change.from as number, change.to as number, change.text)
         });
     })
 
-    var automergeChange = Automerge.getChanges(Automerge.init(), replica);
+    var automergeChange = Automerge.getChanges(localChange, replica);
 
-    localChange = Automerge.applyChanges(localChange, automergeChange)[0];
-
+    // for (const change of automergeChange) {
+    //     const decoded = Automerge.decodeChange(change)
+    //     console.log("decoded: ", decoded)
+    //     console.log("Ops:", decoded.ops)
+    // }
+    localChange = replica;
+    
     console.log("localChange", localChange.text);
 
     return automergeChange;

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { chatGroup, GroupResponse } from "@/types";
+import { GroupResponse } from "@/types";
 import ChatGroupList from "@/components/chat/group-list";
 import ChatGroupDetail from "@/components/chat/group-detail";
 import { useStorage } from "@/hooks/useStorage";

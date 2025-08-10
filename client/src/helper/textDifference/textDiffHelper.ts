@@ -18,6 +18,6 @@ export const diffFinder = (oldState: string, newState: string) => {
             index += data.length;
         }
     }
-    // setOldText(newState);
+    console.log("changes found: ", changes);
     return changes;
 }

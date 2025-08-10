@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { MergeChanges, getChanges } from '@/helper/automerger/automergerHelper';
+import { MergeChanges, getChanges, setInitialDocument } from '@/helper/automerger/automergerHelper';
 import { diffFinder } from '@/helper/textDifference/textDiffHelper';
 
 type Props = {
@@ -17,7 +17,10 @@ export default function Editor(prop: Props) {
     const timeoutRef = useRef(null);
 
     useEffect(() => {
-        setText(prop.documentText); //init
+        console.log("re-rendering editor");
+        setText(prop.documentText);
+        setOldText(prop.documentText);
+        setInitialDocument(prop.documentText);
     }, [prop.documentText]);
 
     const syncChanges = (val: any) => {
@@ -44,8 +47,11 @@ export default function Editor(prop: Props) {
     const handleAction = (updatedText: string) => {
         //find the difference
         var diff = diffFinder(oldText, updatedText);
+
         setOldText(updatedText);
         var automergeChange = getChanges(oldText, diff);
+        console.log("sending this: ", automergeChange);
+
         syncChanges(automergeChange);
     }
 

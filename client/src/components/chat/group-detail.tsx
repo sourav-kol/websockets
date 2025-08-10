@@ -18,6 +18,7 @@ export default function ChatGroupDetail(props: Prop) {
     const [serverMessage, setServerMessage] = useState<change>();
 
     useEffect(() => {
+        console.log("reconnecting ....")
         if (socket) {
             socket.on(socketMessageEvent.connect, () => {
                 console.log("Connected to server", socket.id);
@@ -33,6 +34,7 @@ export default function ChatGroupDetail(props: Prop) {
     }, [socket]);
 
     useEffect(() => {
+        console.log("joinning room: ", chatData.id);
         joinRoom();
     }, [chatData.id]);
 
