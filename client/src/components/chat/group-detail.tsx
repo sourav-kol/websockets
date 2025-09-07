@@ -6,6 +6,7 @@ import { joinRoomRequest, clientEditorMessageRequest, change, chatGroup, GroupRe
 import { useSocket } from '@/context/socket-provider';
 import Editor from '@/components/editor/text-area';
 import { socketMessageEvent } from '@/constants/constants';
+import { next as Automerge } from "@automerge/automerge";
 
 type Prop = {
     chatData: GroupResponse,
@@ -15,7 +16,7 @@ type Prop = {
 export default function ChatGroupDetail(props: Prop) {
     const { chatData, sender } = props;
     const socket = useSocket();
-    const [serverMessage, setServerMessage] = useState<change>();
+    const [serverMessage, setServerMessage] = useState<Automerge.Change[]>();
 
     useEffect(() => {
         console.log("reconnecting ....")
@@ -46,7 +47,8 @@ export default function ChatGroupDetail(props: Prop) {
             socket.emit(socketMessageEvent.joinRoom, payload);
     }
 
-    const sendMessage = (change: change) => {
+    const sendMessage = (change: Automerge.Change[]) => {
+        console.log("hehere", change)
         var payload: clientEditorMessageRequest = {
             roomId: chatData.id,
             message: change,

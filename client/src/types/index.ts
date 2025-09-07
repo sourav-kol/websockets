@@ -1,3 +1,5 @@
+import { next as Automerge } from "@automerge/automerge";
+
 export type joinRoomRequest = {
     roomId: string;
 }
@@ -18,7 +20,7 @@ export type change = {
 
 export type clientEditorMessageRequest = {
     roomId: string, //to
-    message: change,
+    message: Automerge.Change[],
     sender: string
 }
 
