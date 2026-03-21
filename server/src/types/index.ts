@@ -54,5 +54,5 @@ export type GroupResponse = {
 export type CacheValue = {
     socketId: string,
     timeStamp: Date,
-    userId: string
+    userId?: string
 }
