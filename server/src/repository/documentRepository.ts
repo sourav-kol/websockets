@@ -1,4 +1,4 @@
-import { PrismaClient } from '../prisma/src/db'
+import { PrismaClient } from '../../src/prisma/src/db'
 import { Document } from '@/types';
 
 const prisma = new PrismaClient();

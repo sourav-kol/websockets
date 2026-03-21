@@ -19,7 +19,6 @@ export default function ChatGroupDetail(props: Prop) {
     const [serverMessage, setServerMessage] = useState<Automerge.Change[]>();
 
     useEffect(() => {
-        console.log("reconnecting ....")
         if (socket) {
             socket.on(socketMessageEvent.connect, () => {
                 console.log("Connected to server", socket.id);

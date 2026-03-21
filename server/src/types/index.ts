@@ -50,3 +50,9 @@ export type GroupResponse = {
   members: MemberResponse[]
   document: DocumentResposne
 }
+
+export type CacheValue = {
+    socketId: string,
+    timeStamp: Date,
+    userId: string
+}
