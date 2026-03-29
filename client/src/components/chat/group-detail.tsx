@@ -27,7 +27,6 @@ export default function ChatGroupDetail(props: Prop) {
             });
 
             socket.on(socketMessageEvent.serverMessage, (msg: clientEditorMessageRequest) => {
-                console.log("Message from server:", msg);
                 if (msg.sender != sender)
                     setServerMessage((prevMessages) => msg.message);
             });
@@ -36,7 +35,6 @@ export default function ChatGroupDetail(props: Prop) {
 
             //sync
             socket.on(socketMessageEvent.syncInit, (msg: any) => {
-                console.log("syncing start:", msg);
                 //generate latest automerger snapshot 
                 //send it back via socket
                 snapShot = generateSnaphot();
@@ -48,7 +46,6 @@ export default function ChatGroupDetail(props: Prop) {
             });
 
             socket.on(socketMessageEvent.syncComplete, (msg: any) => {
-                console.log("syncing start:", msg);
                 //capture the automerger snapshot 
                 //init automerger
                 syncFromSnapshot(msg.snapShot);
@@ -59,7 +56,7 @@ export default function ChatGroupDetail(props: Prop) {
     }, [socket]);
 
     useEffect(() => {
-        console.log("joinning room: ", chatData.id);
+        // console.log("joinning room: ", chatData.id);
         joinRoom();
     }, [chatData.id]);
 
@@ -76,7 +73,6 @@ export default function ChatGroupDetail(props: Prop) {
     }
 
     const sendMessage = (change: Automerge.Change[]) => {
-        console.log("hehere", change)
         var payload: clientEditorMessageRequest = {
             roomId: chatData.id,
             message: change,
