@@ -26,8 +26,8 @@ export default function Start() {
         });
 
         tempSocket.on("server_msg", (msg: clientEditorMessageRequest) => {
-            console.log("Message from server:", msg, msg.sender != sender);
-            if (msg.sender != sender)
+            console.log("Message from server:", msg, msg.userId != sender);
+            if (msg.userId != sender)
                 setServerMessage((prevMessages) => msg.message);
         });
     }, []);
@@ -36,7 +36,7 @@ export default function Start() {
         var payload: clientEditorMessageRequest = {
             roomId: name,
             message: change,
-            sender: sender
+            userId: sender
         }
         if (socket) {
             socket.emit("client_msg", payload);

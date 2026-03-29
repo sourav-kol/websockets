@@ -2,6 +2,7 @@ import { next as Automerge } from "@automerge/automerge";
 
 export type joinRoomRequest = {
     roomId: string;
+    userId: string;
 }
 
 export type clientMessageRequest = {
@@ -21,7 +22,7 @@ export type change = {
 export type clientEditorMessageRequest = {
     roomId: string, //to
     message: Automerge.Change[],
-    sender: string
+    userId: string
 }
 
 export type changeData = {

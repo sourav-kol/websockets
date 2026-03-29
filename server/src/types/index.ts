@@ -1,11 +1,12 @@
 export type joinRoomRequest = {
     roomId: string;
+    userId: string;
 }
 
 export type clientMessageRequest = {
     roomId: string, //to
     message: any, //change
-    sender: string
+    userId: string //from
 }
 
 export type User = {
@@ -52,7 +53,7 @@ export type GroupResponse = {
 }
 
 export type CacheValue = {
-    socketId: string,
+    // socketId: string,
     timeStamp: Date,
-    userId?: string
+    userId: string
 }

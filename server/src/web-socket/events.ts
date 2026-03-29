@@ -13,7 +13,7 @@ import { joinRoomRequest, clientMessageRequest, CacheValue } from ".././types";
 const joinRoom = (socket: Socket) => {
 
     socket.on(websocketEvents.JOINROOM, (request: joinRoomRequest) => {
-        var { roomId } = request;
+        var { roomId, userId } = request;
 
         //new join room request
         //check the cache store - roomId -> get the last doc updater
@@ -23,24 +23,32 @@ const joinRoom = (socket: Socket) => {
         //joining client will have another websocket listener to get the synced doc and init its automerger instance
 
         socket.join(roomId);
-        console.log('joined ', socket.id, 'room ID:', roomId);
+        console.log('joined ', socket.id, 'room ID:', roomId, "userId: ", userId);
 
-        docSyncInit(socket, roomId, socket.id);
+        docSyncInit(socket, roomId, userId);
     });
 }
 
-const docSyncInit = (socket: Socket, currentRoomId: string, sessionId: string) => {
-    var lastUpdatedBy = serverStore.cache.get(currentRoomId);
+const docSyncInit = (socket: Socket, currentRoomId: string, userId: string) => {
+    var lastUpdatedBy = serverStore.get(currentRoomId, userId);
     if (lastUpdatedBy) {
-        socket.to(lastUpdatedBy.socketId).emit(websocketEvents.SYNCINIT, {
-            socketId: sessionId
+        socket.to(currentRoomId).emit(`${websocketEvents.SYNCINIT}/${lastUpdatedBy.userId}`, {
+            userId: userId
         })
+    } else {
+        var value: CacheValue = {
+            // socketId: socket.id,
+            timeStamp: new Date(),
+            userId: userId
+        }
+
+        serverStore.set(currentRoomId, userId, value);
     }
 }
 
 const docSync = (socket: Socket) => {
     socket.on(websocketEvents.SYNC, (request: any) => {
-        socket.to(request.socketId).emit(websocketEvents.SYNCOMPLETE, {
+        socket.to(request.roomId).emit(`${websocketEvents.SYNCOMPLETE}/${request.userId}`, {
             snapShot: request.snapShot
         });
     })
@@ -50,11 +58,12 @@ const docSync = (socket: Socket) => {
 const recieveMessageByRoom = (socket: Socket) => {
     socket.on(websocketEvents.CLIENTMSG, (request: clientMessageRequest) => {
         var value: CacheValue = {
-            socketId: socket.id,
+            // socketId: socket.id,
+            userId: request.userId,
             timeStamp: new Date()
         }
 
-        serverStore.set(request.roomId, value);
+        serverStore.set(request.roomId, request.userId, value);
 
         socket.to(request.roomId).emit(websocketEvents.SERVERMSG, request);
     });

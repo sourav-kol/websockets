@@ -28,25 +28,28 @@ export default function ChatGroupDetail(props: Prop) {
             });
 
             socket.on(socketMessageEvent.serverMessage, (msg: clientEditorMessageRequest) => {
-                if (msg.sender != sender)
+                if (msg.userId != sender)
                     setServerMessage((prevMessages) => msg.message);
             });
 
             let snapShot = {};
 
+            
             //sync
-            socket.on(socketMessageEvent.syncInit, (msg: any) => {
+            socket.on(`${socketMessageEvent.syncInit}/${sender}`, (msg: any) => {
                 //generate latest automerger snapshot 
                 //send it back via socket
                 snapShot = generateSnaphot();
 
                 socket.emit(socketMessageEvent.sync, {
-                    socketId: msg.socketId,
-                    snapShot: snapShot
+                    // socketId: msg.socketId,
+                    snapShot: snapShot,
+                    userId: msg.userId,
+                    roomId: chatData.id
                 });
             });
 
-            socket.on(socketMessageEvent.syncComplete, (msg: any) => {
+            socket.on(`${socketMessageEvent.syncComplete}/${sender}`, (msg: any) => {
                 //capture the automerger snapshot 
                 //init automerger
                 var text = syncFromSnapshot(msg.snapShot);
@@ -64,7 +67,8 @@ export default function ChatGroupDetail(props: Prop) {
 
     const joinRoom = () => {
         var payload: joinRoomRequest = {
-            roomId: chatData.id
+            roomId: chatData.id,
+            userId: sender
         }
         if (socket)
             socket.emit(socketMessageEvent.joinRoom, payload);
@@ -74,7 +78,7 @@ export default function ChatGroupDetail(props: Prop) {
         var payload: clientEditorMessageRequest = {
             roomId: chatData.id,
             message: change,
-            sender: sender
+            userId: sender
         }
 
         if (socket) {
@@ -87,6 +91,7 @@ export default function ChatGroupDetail(props: Prop) {
         chatData &&
         <div className="">
             <Editor
+                socketId={socket?.id}
                 senderId={sender}
                 serverMessage={serverMessage}
                 sendMessage={sendMessage}

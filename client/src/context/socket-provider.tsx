@@ -12,8 +12,6 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
         //todo: take from config files
         const tempSocket = io("http://localhost:8080/");
         setSocket(tempSocket); // Set the socket state to the new socket instance
-
-        console.log("sending...", tempSocket.id);
     }, []);
 
     return (
