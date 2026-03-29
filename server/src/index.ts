@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 
 import { app, expressServer } from './express-server';
 import { io } from './web-socket';
-import { joinRoom, recieveMessageByRoom } from './web-socket/events';
+import { joinRoom, recieveMessageByRoom, docSync} from './web-socket/events';
 import { websocketEvents } from './helpers/constants';
 import { userController } from './controller/userController';
 import { groupController } from './controller/groupController';
@@ -22,6 +22,7 @@ io.on(websocketEvents.CONNECT, (socket) => {
 
   joinRoom(socket);
   recieveMessageByRoom(socket);
+  docSync(socket);
 });
 
 app.use('/group', groupController);

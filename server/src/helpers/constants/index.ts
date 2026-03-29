@@ -8,5 +8,8 @@ const websocketEvents = {
     CLIENTMSG: 'client_msg',
     SERVERMSG: 'server_msg',
     ROOMMESSAGE: 'room_message',
+    SYNCINIT: "sync_init",
+    SYNC: "sync",
+    SYNCOMPLETE: "sync_complete"
 }
 export { websocketEvents };

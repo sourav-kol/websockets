@@ -1,14 +1,15 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { MergeChanges, getChanges, setInitialDocument } from '@/helper/automerger/automergerHelper';
+import { MergeChanges, getChanges, getText, setInitialDocument } from '@/helper/automerger/automergerHelper';
 import { diffFinder } from '@/helper/textDifference/textDiffHelper';
 
 type Props = {
     senderId: string
     serverMessage: any | undefined,
     sendMessage: (change: any) => void,
-    documentText: string
+    documentText: string,
+    syncedData: boolean
 }
 
 export default function Editor(prop: Props) {
@@ -17,10 +18,18 @@ export default function Editor(prop: Props) {
     const timeoutRef = useRef(null);
 
     useEffect(() => {
-        console.log("re-rendering editor");
-        setText(prop.documentText);
-        setOldText(prop.documentText);
-        setInitialDocument(prop.documentText);
+        console.log("prop: ", prop)
+        if (!prop.syncedData) {
+            console.log("re-rendering editor");
+            setText(prop.documentText);
+            setOldText(prop.documentText);
+            setInitialDocument(prop.documentText);
+        } else {
+            var text = getText();
+
+            setText(text);
+            setOldText(text);
+        }
     }, [prop.documentText]);
 
     const syncChanges = (val: any) => {
@@ -57,6 +66,7 @@ export default function Editor(prop: Props) {
 
     //merging remote changes
     useEffect(() => {
+        console.log("ehejrhej")
         if (!prop.serverMessage)
             return;
 

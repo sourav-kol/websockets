@@ -7,6 +7,7 @@ import { useSocket } from '@/context/socket-provider';
 import Editor from '@/components/editor/text-area';
 import { socketMessageEvent } from '@/constants/constants';
 import { next as Automerge } from "@automerge/automerge";
+import { generateSnaphot, syncFromSnapshot } from '@/helper/automerger/automergerHelper';
 
 type Prop = {
     chatData: GroupResponse,
@@ -17,6 +18,7 @@ export default function ChatGroupDetail(props: Prop) {
     const { chatData, sender } = props;
     const socket = useSocket();
     const [serverMessage, setServerMessage] = useState<Automerge.Change[]>();
+    const [syncedData, setSyncedData] = useState<boolean>(false)
 
     useEffect(() => {
         if (socket) {
@@ -29,6 +31,29 @@ export default function ChatGroupDetail(props: Prop) {
                 if (msg.sender != sender)
                     setServerMessage((prevMessages) => msg.message);
             });
+
+            let snapShot = {};
+
+            //sync
+            socket.on(socketMessageEvent.syncInit, (msg: any) => {
+                console.log("syncing start:", msg);
+                //generate latest automerger snapshot 
+                //send it back via socket
+                snapShot = generateSnaphot();
+
+                socket.emit(socketMessageEvent.sync, {
+                    socketId: msg.socketId,
+                    snapShot: snapShot
+                });
+            });
+
+            socket.on(socketMessageEvent.syncComplete, (msg: any) => {
+                console.log("syncing start:", msg);
+                //capture the automerger snapshot 
+                //init automerger
+                syncFromSnapshot(msg.snapShot);
+                setSyncedData(true);
+            });
         }
 
     }, [socket]);
@@ -37,6 +62,10 @@ export default function ChatGroupDetail(props: Prop) {
         console.log("joinning room: ", chatData.id);
         joinRoom();
     }, [chatData.id]);
+
+    // useEffect(() => {
+
+    // },[syncedData]);
 
     const joinRoom = () => {
         var payload: joinRoomRequest = {
@@ -68,6 +97,7 @@ export default function ChatGroupDetail(props: Prop) {
                 serverMessage={serverMessage}
                 sendMessage={sendMessage}
                 documentText={chatData.document.content}
+                syncedData={syncedData}
             />
         </div>
     );

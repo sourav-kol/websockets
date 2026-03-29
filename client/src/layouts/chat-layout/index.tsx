@@ -31,7 +31,7 @@ export default function ChatLayout(props: Prop) {
 
     return (
         <>
-            <div className="gap-1 h-[83vh] w-11/12 max-w-6xl mx-auto my-8 font-white grid grid-cols-[20%_60%_1fr]">
+            <div className="gap-1 h-[83vh] w-11/12 max-w-6xl mx-auto my-8 font-white grid grid-cols-[20%_1fr]">
                 <div className="bg-primary rounded-md overflow-hidden h-full flex flex-col">
                     <div className="h-1/12 text-center shadow shadow-white/50 z-10">
                         My Groups
@@ -50,7 +50,7 @@ export default function ChatLayout(props: Prop) {
                     </div>
                 </div>
 
-                <div className="rounded-md overflow-hidden h-full grid grid-rows-[30%_1fr] gap-1">
+                {/* <div className="rounded-md overflow-hidden h-full grid grid-rows-[30%_1fr] gap-1">
                     <div className="bg-primary overflow-hiddenh-full flex flex-col items-center justify-center">
                         <div className="w-full h-3/10 text-center shadow shadow-white/50 z-10">
                             Users
@@ -68,7 +68,7 @@ export default function ChatLayout(props: Prop) {
                             messages
                         </div>
                     </div>
-                </div>
+                </div> */}
             </div>
         </>
     );
