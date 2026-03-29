@@ -18,6 +18,5 @@ export const diffFinder = (oldState: string, newState: string) => {
             index += data.length;
         }
     }
-    console.log("changes found: ", changes);
     return changes;
 }

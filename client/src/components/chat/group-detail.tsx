@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-import { joinRoomRequest, clientEditorMessageRequest, change, chatGroup, GroupResponse } from '@/types';
+import { joinRoomRequest, clientEditorMessageRequest, GroupResponse } from '@/types';
 import { useSocket } from '@/context/socket-provider';
 import Editor from '@/components/editor/text-area';
 import { socketMessageEvent } from '@/constants/constants';
@@ -18,7 +18,8 @@ export default function ChatGroupDetail(props: Prop) {
     const { chatData, sender } = props;
     const socket = useSocket();
     const [serverMessage, setServerMessage] = useState<Automerge.Change[]>();
-    const [syncedData, setSyncedData] = useState<boolean>(false)
+    const [isSynced, setIsSynced] = useState<boolean>(false)
+    const [syncedData, setSyncedData] = useState<string>(chatData.document.content)
 
     useEffect(() => {
         if (socket) {
@@ -48,8 +49,9 @@ export default function ChatGroupDetail(props: Prop) {
             socket.on(socketMessageEvent.syncComplete, (msg: any) => {
                 //capture the automerger snapshot 
                 //init automerger
-                syncFromSnapshot(msg.snapShot);
-                setSyncedData(true);
+                var text = syncFromSnapshot(msg.snapShot);
+                setIsSynced(true);
+                setSyncedData(text);
             });
         }
 
@@ -59,10 +61,6 @@ export default function ChatGroupDetail(props: Prop) {
         // console.log("joinning room: ", chatData.id);
         joinRoom();
     }, [chatData.id]);
-
-    // useEffect(() => {
-
-    // },[syncedData]);
 
     const joinRoom = () => {
         var payload: joinRoomRequest = {
@@ -92,8 +90,8 @@ export default function ChatGroupDetail(props: Prop) {
                 senderId={sender}
                 serverMessage={serverMessage}
                 sendMessage={sendMessage}
-                documentText={chatData.document.content}
-                syncedData={syncedData}
+                documentText={syncedData}
+                isSynced={isSynced}
             />
         </div>
     );

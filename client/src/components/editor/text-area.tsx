@@ -9,7 +9,7 @@ type Props = {
     serverMessage: any | undefined,
     sendMessage: (change: any) => void,
     documentText: string,
-    syncedData: boolean
+    isSynced: boolean
 }
 
 export default function Editor(prop: Props) {
@@ -18,16 +18,13 @@ export default function Editor(prop: Props) {
     const timeoutRef = useRef(null);
 
     useEffect(() => {
-        if (!prop.syncedData) {
-            setText(prop.documentText);
-            setOldText(prop.documentText);
+        if (!prop.isSynced) {
             setInitialDocument(prop.documentText);
-        } else {
-            var text = getText();
-
-            setText(text);
-            setOldText(text);
         }
+
+        setText(prop.documentText);
+        setOldText(prop.documentText);
+
     }, [prop.documentText]);
 
     const syncChanges = (val: any) => {
