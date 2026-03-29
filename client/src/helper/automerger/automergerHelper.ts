@@ -106,7 +106,6 @@ let localChange: Automerge.Doc<{ text: string }> = Automerge.init();
 
 export function setInitialDocument(text: string) {
     localChange = Automerge.from({ text });
-    console.log("init: ", Automerge.getHeads(localChange));
 }
 
 export function MergeChanges(text: string, changes: Automerge.Change[]): string {
@@ -136,29 +135,18 @@ export function getChanges(text: string, changes: changeData[]): Automerge.Chang
 
     var automergeChange = Automerge.getChanges(localChange, replica);
 
-    // for (const change of automergeChange) {
-    //     const decoded = Automerge.decodeChange(change)
-    //     console.log("decoded: ", decoded)
-    //     console.log("Ops:", decoded.ops)
-    // }
-    // console.log("before: ", Automerge.getObjectId(localChange.text));
-
     localChange = replica;
-
-    // console.log("after: ", Automerge.getObjectId(localChange.text));
 
     return automergeChange;
 }
 
 export function generateSnaphot(): Uint8Array {
-    console.log("sync hash: ", Automerge.getHeads(localChange))
     return Automerge.save(localChange);
 }
 
 export function syncFromSnapshot(snapshot: Buffer): string {
     localChange = Automerge.load(new Uint8Array(snapshot));
 
-    console.log("load: ", localChange.text, Automerge.getHeads(localChange));
     return localChange.text;
 }
 

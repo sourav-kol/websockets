@@ -18,9 +18,7 @@ export default function Editor(prop: Props) {
     const timeoutRef = useRef(null);
 
     useEffect(() => {
-        console.log("prop: ", prop)
         if (!prop.syncedData) {
-            console.log("re-rendering editor");
             setText(prop.documentText);
             setOldText(prop.documentText);
             setInitialDocument(prop.documentText);
@@ -59,14 +57,12 @@ export default function Editor(prop: Props) {
 
         setOldText(updatedText);
         var automergeChange = getChanges(oldText, diff);
-        console.log("sending this: ", automergeChange);
 
         syncChanges(automergeChange);
     }
 
     //merging remote changes
     useEffect(() => {
-        console.log("ehejrhej")
         if (!prop.serverMessage)
             return;
 
